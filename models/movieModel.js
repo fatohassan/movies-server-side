@@ -2,13 +2,17 @@ const mongoose = require("mongoose");
 
 // creating a model for Movies
 const movieSchema = new mongoose.Schema({
+  // index ''DOne'
   adult: Boolean,
   backdrop_path: {
     type: String,
     require: true,
   },
   genre_ids: [],
-  id: Number,
+  id: {
+    type: Number,
+    unique: true,
+  },
   original_language: {
     type: String,
   },
@@ -35,7 +39,7 @@ const movieSchema = new mongoose.Schema({
 
 const Movie = new mongoose.model("Movie", movieSchema);
 
-// creating document for each movie using Movie Class 
+//
 const movie_1 = new Movie({
   adult: false,
   backdrop_path: "/fqv8v6AycXKsivp1T5yKtLbGXce.jpg",
@@ -116,4 +120,4 @@ const movie_4 = new Movie({
 
 movie_4.save();
 
-module.exports = mongoose.model('Movies', movieSchema)
+module.exports = mongoose.model("Movies", movieSchema);
