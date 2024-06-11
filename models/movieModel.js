@@ -37,7 +37,8 @@ const movieSchema = new mongoose.Schema({
   vote_count: Number,
 });
 
-const Movie = new mongoose.model("Movie", movieSchema);
+try {
+  const Movie = new mongoose.model("Movie", movieSchema);
 
 //
 const movie_1 = new Movie({
@@ -119,5 +120,8 @@ const movie_4 = new Movie({
 });
 
 movie_4.save();
+} catch (error) {
+  // throw new Error('Duplicate')
+}
 
 module.exports = mongoose.model("Movies", movieSchema);

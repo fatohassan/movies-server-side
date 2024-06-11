@@ -13,10 +13,6 @@ mongoose.connect(MONGO_URL);
 
 app.use("/", router);
 
-try {
-  const server = app.listen(PORT, () => {
-    console.log(`Server running on ${PORT}`);
-  });
-} catch (error) {
-  console.log(`Duplicate Enter ${error.message}`);
-}
+const server = app.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`);
+});
