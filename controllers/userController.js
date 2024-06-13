@@ -17,4 +17,20 @@ const createUser = async (req, res) => {
   }
 };
 
-module.exports = { createUser };
+//@desc Login user
+//@route POST
+const loginUser = async (req, res) => {
+    try {
+        const {userName, password} = req.body
+        const user = await User.findOne({userName}) 
+        if (user && {password}) {
+            res.status(200).send('Done');
+        }
+    } catch (error) {
+        console.log(error.message)
+        res.status(400).send('Invalid input')
+        throw new Error('Invalid Data')
+    }
+}
+
+module.exports = { createUser, loginUser };
