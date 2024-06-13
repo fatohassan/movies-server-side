@@ -13,7 +13,7 @@ const movieSchema = mongoose.Schema({
   },
   overview: {
     type: String,
-    required: true
+    // required: true
   },
 });
 

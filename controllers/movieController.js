@@ -43,9 +43,13 @@ const createMovie = async (req, res) => {
 const updateMovie = async (req, res) => {
   try {
     const movie = await Movies.findOne({id: req.params.id})
-    const updatedMovie = await Movies.findOneAndUpdate(
-      req.body,
-    );
+    movie.title = req.body.title
+    movie.overview = req.body.overview
+    await movie.save()
+    // const updatedMovie = await Movies.findOneAndUpdate(
+    //   {id: req.params.id},
+    //   req.body,
+    // );
     res.status(201).json(updateMovie);
   } catch (error) {
     res.status(400).send('All fields are required')
