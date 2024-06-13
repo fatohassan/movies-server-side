@@ -22,8 +22,8 @@ const createUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         const {userName, password} = req.body
-        const user = await User.findOne({userName}) 
-        if (user && {password}) {
+        const user = await User.findOne({userName})
+        if (user && (password === user.password)) {
             res.status(200).send('Done');
         }
     } catch (error) {
