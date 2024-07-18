@@ -1,26 +1,50 @@
 const express = require("express");
+const cors = require("cors");
+const http = require("http")
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const bodyParser = require('body-parser')
-
+const multer = require("multer");
+const bodyParser = require("body-parser");
+const typeDefs = require("./graphql/typeDefs.ts")
+const resolvers = require("./graphql/resolvers.ts")
+const upload = multer();
 const router = require("./routes/router");
+const { ApolloServer } = require("@apollo/server");
+const { expressMiddleware } = require("@apollo/server/express4");
 
-
-const app = express();
 dotenv.config();
 
-app.use(bodyParser.json()) // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true }))
+const startApp = async () => {
+  const app = express();
+  const httpServer = http.createServer(app)
 
-app.use('/', require('./routes/userRouter'))
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers
+  })
+
+  await server.start();
+
+  app.use(cors());
+  app.use(bodyParser.json()); 
+  app.use(bodyParser.urlencoded({ extended: true }));
+
+  app.use("/", require("./routes/userRouter"));
+  app.use("/", router);
+
+  const gqlRouter = express.Router();
+
+  app.use('/graphql', [expressMiddleware(server)]);
+
+  const port = process.env.PORT || 7000;
+
+  const MONGO_URL = process.env.MONGO_URL;
+  mongoose.connect(MONGO_URL);
 
 
-const PORT = process.env.PORT || 7000;
-const MONGO_URL = process.env.MONGO_URL;
-mongoose.connect(MONGO_URL);
+  httpServer.listen({port: port}, () => {
+    console.log(`Server running at http://localhost:${port}`);
+  });
+};
 
-app.use("/", router);
-
-const server = app.listen(PORT, () => {
-  console.log(`Server running on ${PORT}`);
-});
+startApp()

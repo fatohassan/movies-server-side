@@ -29,16 +29,25 @@ const getMovie = async (req, res) => {
 //@route POST '/movie'
 const createMovie = async (req, res) => {
   try {
-    const { title, overview, id } = req.body;
+    const { original_title, overview, release_date, vote_average, backdrop_path, image } =
+      req.body;
+      console.log(`this is the ${JSON.stringify(req.body)}`)
+   
+    console.log(`This is the ${image}`)
     const movie = await Movies.create({
-      title,
+      original_title,
+      release_date,
+      vote_average,
+      backdrop_path,
       overview,
-      id,
+      image,
+      id: _id,
     });
     res.status(201).json(movie);
   } catch (error) {
+    console.log(error)
     res.status(400).send("All fields are required");
-    throw new Error("Invalid Data");
+    // throw new Error("Invalid Data");
   }
 };
 
@@ -51,11 +60,12 @@ const updateMovie = async (req, res) => {
     // movie.overview = req.body.overview;
     // await movie.save();
     const updatedMovie = await Movies.findOneAndUpdate(
-      {id: req.params.id},
-      req.body,
+      { id: req.params.id },
+      req.body
     );
     res.status(201).json(updateMovie);
   } catch (error) {
+    console.log(error.message);
     res.status(400).send("All fields are required");
     throw new Error("Invalid Data");
   }
@@ -67,8 +77,9 @@ const deleteMovie = async (req, res) => {
   try {
     // const {title, id} = req.body;
     const movie = await Movies.deleteOne({ id: req.params.id });
-    res.status(201).json(movie);
+    res.status(200).json(movie);
   } catch (error) {
+    console.log(error.message);
     res.status(400).send("All fields are required");
     throw new Error("Invalid Data");
   }

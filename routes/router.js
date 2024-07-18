@@ -5,10 +5,12 @@ const {getMovies, getMovie, createMovie, updateMovie, deleteMovie} = require('..
 const { validateToken } = require("../middlewares/validateToken");
 
 // creating a routes for movies 
-router.route("/movie").post(createMovie);
+router.post("/movie", createMovie);
 // when running along the front-end the token must be modified 'either git rid of middleware or 
 // create a log in page to save the token in a local storage and then could use it
-router.get("/", validateToken, getMovies);
-router.route("/movie/:id").get(getMovie).put(updateMovie).delete(deleteMovie)
+router.get("/", getMovies);
+router.put("/movie/:id", updateMovie);
+router.delete("/movie/:id", deleteMovie);
+router.route("/movie/:id").get(getMovie)
 
 module.exports = router;

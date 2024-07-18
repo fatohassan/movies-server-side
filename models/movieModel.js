@@ -3,17 +3,32 @@ const mongoose = require("mongoose");
 // creating a model for Movies
 const movieSchema = mongoose.Schema({
   id: {
-    type: Number,
-    unique: true,
-    required: true
+    type: String,
+    // unique: true,
+    // required: true
   },
-  title: {
+  original_title: {
     type: String,
     required: true
   },
-  overview: {
+  release_date: {
     type: String,
     // required: true
+  },
+  vote_average: {
+    type: Number,
+    // required: true
+  },
+  backdrop_path: {
+    type: String,
+    // required: true
+  },
+  image: {
+    type: String,
+
+  },
+  overview: {
+    type: String
   },
 });
 
