@@ -29,8 +29,8 @@ const req = {
       "Teenager Riley's mind headquarters is undergoing a sudden demolition to make room for something entirely unexpected",
     release_date: "2024-06-11",
     vote_average: 7.761,
-    image: 'yes',
-    backdrop_path: 'yes',
+    image: 'Not null',
+    backdrop_path: 'Not null',
   },
   params: { id: mockObjId },
 };
@@ -69,8 +69,8 @@ describe("GET movie", () => {
         "Teenager Riley's mind headquarters is undergoing a sudden demolition to make room for something entirely unexpected",
       release_date: "2024-06-11",
       vote_average: 7.761,
-      image: 'yes',
-      backdrop_path: 'yes'
+      image: 'Not null',
+      backdrop_path: 'Not null'
     });
     await getMovie(req, res);
     expect(res.status).toHaveBeenCalledWith(404);
@@ -106,8 +106,8 @@ describe("POST movie", () => {
           "Teenager Riley's mind headquarters is undergoing a sudden demolition to make room for something entirely unexpected",
         release_date: "2024-06-11",
         vote_average: 7.761,
-        image: 'yes',
-        backdrop_path: 'yes'
+        image: 'Not null',
+        backdrop_path: 'Not null'
       })
   });
   it("should return status of 400 when movie fail to be created", async () => {
@@ -146,8 +146,8 @@ describe('PUT movie', () => {
               "Teenager Riley's mind headquarters is undergoing a sudden demolition to make room for something entirely unexpected",
             release_date: "2024-06-11",
             vote_average: 7.761,
-            image: 'yes',
-            backdrop_path: 'yes'
+            image: 'Not null',
+            backdrop_path: 'Not null'
           })
     });
     it('should return a status of 400 if movie fail to update', async () => {
