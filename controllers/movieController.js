@@ -6,34 +6,50 @@ const { Movies } = require("../models/movieModel");
 const getMovies = async (req, res) => {
   try {
     const movies = await Movies.find();
-    res.status(200).json(movies);
+    if (!movies) {
+      res.status(404);
+      throw new Error("No data provided in db");
+    }
+    res.status(200);
+    res.json(movies);
   } catch (error) {
     console.log(error.message);
-    res.status(404);
-    throw new Error("Invalid Data");
   }
 };
 
 //@desc Get movie
 //@route GET /:id
 const getMovie = async (req, res) => {
-  const movie = await Movies.findOne({ id: req.params.id });
-  if (!movie) {
-    res.status(404).send("Not movie");
+  try {
+    const movie = await Movies.findById({ _id: req.params.id });
+    if (movie) {
+      res.status(200);
+      res.json(movie);
+    }
+    if (res.headersSent) {
+      return;
+    }
+    res.status(404);
+    res.json("Invalid id for a movie");
     throw new Error("Invalid Data");
+  } catch (error) {
+    console.log(error);
   }
-  res.status(200).json(movie);
 };
 
 //@desc Post movie
 //@route POST '/movie'
 const createMovie = async (req, res) => {
   try {
-    const { original_title, overview, release_date, vote_average, backdrop_path, image } =
-      req.body;
-      console.log(`this is the ${JSON.stringify(req.body)}`)
-   
-    console.log(`This is the ${image}`)
+    const {
+      original_title,
+      overview,
+      release_date,
+      vote_average,
+      backdrop_path,
+      image,
+    } = req.body;
+
     const movie = await Movies.create({
       original_title,
       release_date,
@@ -41,13 +57,17 @@ const createMovie = async (req, res) => {
       backdrop_path,
       overview,
       image,
-      id: _id,
+      // id: _id,
     });
-    res.status(201).json(movie);
+    if (movie) {
+      res.status(201);
+      res.json(movie);
+    }
+    res.status(400);
+    res.json("All fields are required");
+    throw new Error("Invalid Data");
   } catch (error) {
-    console.log(error)
-    res.status(400).send("All fields are required");
-    // throw new Error("Invalid Data");
+    console.log(error);
   }
 };
 
@@ -60,14 +80,18 @@ const updateMovie = async (req, res) => {
     // movie.overview = req.body.overview;
     // await movie.save();
     const updatedMovie = await Movies.findOneAndUpdate(
-      { id: req.params.id },
+      { _id: req.params.id },
       req.body
     );
-    res.status(201).json(updateMovie);
+    if (updateMovie) {
+      res.status(201);
+      res.json(updateMovie);
+    }
+    res.status(400);
+    res.json("Invalid id");
+    throw new Error("Invalid Data");
   } catch (error) {
     console.log(error.message);
-    res.status(400).send("All fields are required");
-    throw new Error("Invalid Data");
   }
 };
 
@@ -75,13 +99,16 @@ const updateMovie = async (req, res) => {
 //@route DELETE '/movie'
 const deleteMovie = async (req, res) => {
   try {
-    // const {title, id} = req.body;
-    const movie = await Movies.deleteOne({ id: req.params.id });
-    res.status(200).json(movie);
+    const movie = await Movies.deleteOne({ _id: req.params.id });
+    if (!movie) {
+      res.status(400);
+      res.json("Invalid id");
+      throw new Error("Invalid Data");
+    }
+    res.status(200);
+    res.json("True");
   } catch (error) {
     console.log(error.message);
-    res.status(400).send("All fields are required");
-    throw new Error("Invalid Data");
   }
 };
 

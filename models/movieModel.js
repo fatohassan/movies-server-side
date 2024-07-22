@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const movieSchema = mongoose.Schema({
   id: {
     type: String,
-    // unique: true,
+    unique: true,
     // required: true
   },
   original_title: {
