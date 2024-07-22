@@ -165,7 +165,7 @@ describe('DELETE movie', () => {
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith('True')
     });
-    it('it should return a status of 200 when movie is deleted', async () => {
+    it('it should return a status of 400 when movie fail to delete', async () => {
         Movies.deleteOne.mockResolvedValueOnce({_id: req.params['123']});
         await deleteMovie(req, res);
         expect(res.status).toHaveBeenCalledWith(400);
